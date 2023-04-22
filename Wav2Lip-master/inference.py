@@ -2,7 +2,7 @@ from os import listdir, path
 import numpy as np
 import scipy, cv2, os, sys, argparse, audio
 import json, subprocess, random, string
-from tqdm import tqdm
+from tqdm.notebook import tqdm
 from glob import glob
 import torch, face_detection
 from models import Wav2Lip
@@ -246,7 +246,8 @@ def main():
 	batch_size = args.wav2lip_batch_size
 	gen = datagen(full_frames.copy(), mel_chunks)
 
-	with tqdm(total=int(np.ceil(float(len(mel_chunks))/batch_size))) as pbar:
+	for i, (img_batch, mel_batch, frames, coords) in enumerate(tqdm(gen, 
+											total=int(np.ceil(float(len(mel_chunks))/batch_size)))):
 		if i == 0:
 			model = load_model(args.checkpoint_path)
 			print ("Model loaded")
@@ -254,9 +255,6 @@ def main():
 			frame_h, frame_w = full_frames[0].shape[:-1]
 			out = cv2.VideoWriter('temp/result.avi', 
 									cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h))
-
-		gen = datagen(full_frames.copy(), mel_chunks)
-		img_batch, mel_batch, frame_batch, coords_batch = next(gen)
 
 		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
 		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
@@ -272,10 +270,8 @@ def main():
 
 			f[y1:y2, x1:x2] = p
 			out.write(f)
-		pbar.update(1)
 
 	out.release()
-	
 
 	command = 'ffmpeg -y -i {} -i {} -strict -2 -q:v 1 {}'.format(args.audio, 'temp/result.avi', args.outfile)
 	subprocess.call(command, shell=platform.system() != 'Windows')
