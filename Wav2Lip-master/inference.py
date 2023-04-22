@@ -246,8 +246,7 @@ def main():
 	batch_size = args.wav2lip_batch_size
 	gen = datagen(full_frames.copy(), mel_chunks)
 
-	for i, (img_batch, mel_batch, frames, coords) in enumerate(tqdm(gen, 
-											total=int(np.ceil(float(len(mel_chunks))/batch_size)))):
+	with tqdm(total=int(np.ceil(float(len(mel_chunks))/batch_size))) as pbar:
 		if i == 0:
 			model = load_model(args.checkpoint_path)
 			print ("Model loaded")
@@ -270,8 +269,10 @@ def main():
 
 			f[y1:y2, x1:x2] = p
 			out.write(f)
+		pbar.update(1)
 
 	out.release()
+	
 
 	command = 'ffmpeg -y -i {} -i {} -strict -2 -q:v 1 {}'.format(args.audio, 'temp/result.avi', args.outfile)
 	subprocess.call(command, shell=platform.system() != 'Windows')
