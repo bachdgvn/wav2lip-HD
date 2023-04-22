@@ -255,6 +255,9 @@ def main():
 			out = cv2.VideoWriter('temp/result.avi', 
 									cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h))
 
+		gen = datagen(full_frames.copy(), mel_chunks)
+		img_batch, mel_batch, frame_batch, coords_batch = next(gen)
+
 		img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
 		mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
 
