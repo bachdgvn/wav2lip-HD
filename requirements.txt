@@ -1,9 +1,11 @@
-librosa==0.7.2
-numpy<1.21.1
-opencv-contrib-python==4.7.0.72
-opencv-python>=4.1.0.72
+basicsr>=1.4.2
+facexlib>=0.2.5
+librosa==0.7.0
+numpy==1.17.1
+opencv-contrib-python>=4.2.0.34
+opencv-python==4.1.0.25
 torch>=1.7
-torchvision>=>=0.8.2
+torchvision==0.3.0
 tqdm==4.48.0
 numba==0.48
 
