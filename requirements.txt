@@ -3,7 +3,7 @@ facexlib>=0.2.5
 librosa==0.7.0
 numpy==1.17.1
 opencv-contrib-python>=4.2.0.34
-opencv-python==4.1.0.25
+opencv-python
 torch>=1.7
 torchvision==0.3.0
 tqdm==4.48.0
