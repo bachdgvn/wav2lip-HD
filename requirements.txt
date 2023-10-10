@@ -1,14 +1,14 @@
 librosa==0.8.1
-numpy
-opencv-contrib-python
+numpy==1.23.5
+opencv-contrib-python==4.5.4.60
 opencv-python
-torch
+torch>=1.7
 torchvision
-tqdm
+tqdm==4.48.0
 numba
 
-basicsr
-facexlib
+basicsr>=1.3.4.0
+facexlib>=0.2.3
 lmdb
 pyyaml
 scipy
